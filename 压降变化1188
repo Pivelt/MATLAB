@@ -1,0 +1,48 @@
+clear
+clc
+x=[98,101,104,107,110,113,116]
+y421=[795366.8	850859.4	898731.9	947693.7	998575.2	1049884.3	1103274.7]
+y436=[767272.5	815085	861498.6	908936.7	957750.6	1007686.5	1059052.8]
+y40=[731814	781997.1	826098.2	870994.1	917332.5	964648.4	1013144.3]
+yup421=[795366.8*1.03	850859.4*1.03	898731.9*1.03	947693.7*1.03	998575.2*1.03	1049884.3*1.03	1103274.7*1.03]
+ydown421=[795366.8*0.97	850859.4*0.97	898731.9*0.97	947693.7*0.97	998575.2*0.97	1049884.3*0.97	1103274.7*0.97]
+fill([x fliplr(x)], [yup421 fliplr(ydown421)], [0.58 0.647 0.65], 'linestyle', 'none','facealpha',0.35)
+hold on
+p1=plot(x,y421,'Marker','*','MarkerSize',7,'Color','b','LineWidth',1)%circle
+hold on
+yup436=[767272.5*1.03	815085*1.03	861498.6*1.03	908936.7*1.03	957750.6*1.03	1007686.5*1.03	1059052.83*1.03]
+ydown436=[767272.5*0.97	815085*0.97	861498.6*0.97	908936.7*0.97	957750.6*0.97	1007686.5*0.97	1059052.83*0.97]
+fill([x fliplr(x)], [yup436 fliplr(ydown436)], [0.58 0.647 0.65], 'linestyle', 'none','facealpha',0.35)
+hold on
+p2=plot(x,y436,'Marker','d','MarkerSize',5,'Color','r','LineWidth',1)%diamond
+hold on
+yup40=[731814*1.03	781997.1*1.03	826098.2*1.03	870994.1*1.03	917332.5*1.03	964648.4*1.03	1013144.3*1.03]
+ydown40=[731814*0.97	781997.1*0.97	826098.2*0.97	870994.1*0.97	917332.5*0.97	964648.4*0.97	1013144.3*0.97]
+fill([x fliplr(x)], [yup40 fliplr(ydown40)], [0.58 0.647 0.65], 'linestyle', 'none','facealpha',0.35)
+hold on
+p3=plot(x,y40,'Marker','x','MarkerSize',8,'Color','m','LineWidth',1)%diamond
+hold on
+xtest1=[103.3 102.9 108.2 107]
+ytest1=[0.89*10^6 0.86*10^6 0.895*10^6 0.875*10^6]
+p4=scatter(xtest1,ytest1,'Marker','^','LineWidth',1,'MarkerEdgeColor','k')
+hold on
+xtestflow1=[104.5051 106.7198827 108.5348209]
+ytestflow1=[8.72527*10^5 8.720802274*10^5 8.716394601*10^5]
+p5=scatter(xtestflow1,ytestflow1,'Marker','o','LineWidth',1.5,'MarkerEdgeColor','k')
+%plot(xtestflow1,ytestflow1,'Marker','o','LineWidth',1.5,'MarkerEdgeColor','k')
+yneg = [8.72527*10^5*0.03 8.720802274*10^5*0.03 8.716394601*10^5*0.03];
+ypos = [8.72527*10^5*0.03 8.720802274*10^5*0.03 8.716394601*10^5*0.03];
+xneg = [104.5051*0.03 106.7198827*0.03 108.5348209*0.03];
+xpos = [104.5051*0.03 106.7198827*0.03 108.5348209*0.03];
+errorbar(xtestflow1,ytestflow1,yneg,ypos,xneg,xpos,'o','Color','k','LineWidth' ,0.5)
+% pumpflow1=[83.87 131.12]
+% pumppress1=[89.8*10^4 89.04*10^4]
+% plot(pumpflow1,pumppress1,'Marker','x','LineWidth',1.5,'MarkerEdgeColor','k')
+set(gca, 'FontSize',11)
+set(gca,'XLim',[95 120])
+xlabel('Flowrate(m^3/h)', 'FontSize',12,'Fontangle','italic')
+ylabel('Pressure Drop(Pa)', 'FontSize',12 ,'Fontangle','italic')
+legend([p1 p2 p3 p4 p5],{'D42.1+F45','D42.85+F41','D43.6+F37','Test results','Flowmaster results'},...
+'Location','southeast','NumColumns',1)
+grid on
+set(gca,'ygrid','on','GridColor','k','gridlinestyle','-','Gridalpha',0.3)
