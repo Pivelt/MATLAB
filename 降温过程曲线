@@ -1,0 +1,389 @@
+clear
+clc
+%A=xlsread('C:\Users\PIYUE\Desktop\bb\1418aa.xlsx');
+time=[ ];
+Temperature=[ ];
+burden=[];
+zerox=[];
+coolvelocity=[]*nan;
+heatexchanger=[];
+a=1;
+b=1;
+c=1;
+for i=1:600
+    time(i)=i/60
+    Temperature(i)=290-time(i)*28
+    if abs(Temperature(i)-180)<=(28/60)
+        a=i
+        break
+    end
+end
+
+%180℃台阶上的温度计算
+for j=a:a+240
+    Temperature(j)=Temperature(i)
+    time(j)=j/60
+end
+%180℃至拐点温度的计算，同时寻找拐点
+%j时刻是开始降温的时间，K时刻是不能满足的时间
+c=a+240
+b=a+240
+actualburden=[];
+actualveolcity=[];
+for k=a+240:a+2240
+    if Temperature(k-1)<60
+        break
+    elseif Temperature(k-1)<70
+        heatexchanger(k)=0.5713*Temperature(k-1)-21.84
+        time(k)=k/60
+        burden(k)=(45.88*(time(k).^-0.2558)-3.294);
+        coolvelocity(k)=(2*heatexchanger(k)-burden(k))*1000*3600/(3.03*10.^6)
+        if coolvelocity(k)<28
+            actualveolcity(k)=coolvelocity(k)
+            Temperature(k)=Temperature(k-1)-coolvelocity(k)/60
+            actualburden(k)=heatexchanger(k)
+        else
+            b=b+1
+            actualveolcity(k)=28
+            %heatexchanger(k)=0.5713*Temperature(k-1)-21.84
+            Temperature(k)=Temperature(k-1)-28/60
+            actualburden(k)=(burden(k)+28*(3.03*10.^6)/(1000*3600))/2
+        end
+    else
+        c=c+1
+        time(k)=k/60
+        heatexchanger(k)=0.5713*Temperature(k-1)-21.84
+        burden(k)=(45.88*(time(k).^-0.2558)-3.294+7.591);
+        coolvelocity(k)=(2*heatexchanger(k)-burden(k))*1000*3600/(3.03*10.^6)
+        if coolvelocity(k)<28
+            actualveolcity(k)=coolvelocity(k)
+            Temperature(k)=Temperature(k-1)-coolvelocity(k)/60
+            actualburden(k)=heatexchanger(k)
+        else
+            b=b+1
+            actualveolcity(k)=28
+            Temperature(k)=Temperature(k-1)-28/60
+            actualburden(k)=(burden(k)+28*(3.03*10.^6)/(1000*3600))/2
+        end
+    end
+end
+
+%1188部分
+time1188=[ ];
+Temperature1188=[ ];
+burden1188=[];
+coolvelocity1188=[]*nan;
+heatexchanger1188=[];
+aa=1;
+bb=1;
+cc1188=1;
+
+for ii=1:600
+    time1188(ii)=ii/60
+    Temperature1188(ii)=290-time1188(ii)*28
+    if abs(Temperature1188(ii)-180)<=(28/60)
+        aa=ii
+        break
+    end
+end
+
+%180℃台阶上的温度计算
+for ji=aa:aa+240
+    Temperature1188(ji)=Temperature1188(ii)
+    time1188(ji)=ji/60
+end
+%180℃至拐点温度的计算，同时寻找拐点
+%j时刻是开始降温的时间，K时刻是不能满足的时间
+cc1188=aa+240
+bb=aa+240
+actualburden1188=[];
+actualveolcity1188=[];
+for kk=aa+240:aa+2240
+    if Temperature1188(kk-1)<60
+        break
+    elseif Temperature1188(kk-1)<70
+        heatexchanger1188(kk)=0.436*Temperature1188(kk-1)-16.46
+        time1188(kk)=kk/60
+        burden1188(kk)=(45.88*(time1188(kk).^-0.2558)-3.294);
+        coolvelocity1188(kk)=(2*heatexchanger1188(kk)-burden1188(kk))*1000*3600/(3030000)
+        if coolvelocity1188(kk)<28
+            actualveolcity1188(kk)=coolvelocity1188(kk)
+            Temperature1188(kk)=Temperature1188(kk-1)-coolvelocity1188(kk)/60
+            actualburden1188(kk)=heatexchanger1188(kk)
+        else
+            bb=bb+1
+            actualveolcity1188(kk)=28
+            Temperature1188(kk)=Temperature1188(kk-1)-28/60
+            actualburden1188(kk)=(burden1188(kk)+28*(3.03*10.^6)/(1000*3600))/2
+        end
+    else
+        cc1188=cc1188+1
+        time1188(kk)=kk/60
+        heatexchanger1188(kk)=0.436*Temperature1188(kk-1)-16.46
+        burden1188(kk)=(45.88*(time1188(kk).^-0.2558)-3.294+7.591);
+        coolvelocity1188(kk)=(2*heatexchanger1188(kk)-burden1188(kk))*1000*3600/(3030000)
+        if coolvelocity1188(kk)<28
+            actualveolcity1188(kk)=coolvelocity1188(kk)
+            Temperature1188(kk)=Temperature1188(kk-1)-coolvelocity1188(kk)/60
+            actualburden1188(kk)=heatexchanger1188(kk)
+        else
+            bb=bb+1
+            actualveolcity1188(kk)=28
+            Temperature1188(kk)=Temperature1188(kk-1)-28/60
+            actualburden1188(kk)=(burden1188(kk)+28*(3.03*10.^6)/(1000*3600))/2
+        end
+    end
+end
+
+figure(1)
+plot(time(),Temperature(),'b','LineWidth',1)
+hold on
+plot(time1188(),Temperature1188(),'LineStyle','-.','Color','r','LineWidth',1)
+grid on
+xlabel('停堆时间(h)')
+ylabel('反应堆冷却剂温度(℃)')
+set(gca,'YTick',0:25:300)
+set(gca,'XTick',0:2:20)
+%此部分是对绘制的图进行代码注释
+quiver(time(a-100),Temperature(a-100),1,25,'k','filled','linewidth',1,'ShowArrowHead','off')
+text(time(a-100)+1,Temperature(a-100)+25,'最大冷却速率（28℃/h）')
+
+quiver(time(a+100),Temperature(a+100),1,25,'k','filled','linewidth',1,'ShowArrowHead','off')
+text(time(a+100)+1,Temperature(a+100)+25, {'RHR投运温度调节的准备';
+          '及稳压器灭汽腔（4h）'})
+      
+quiver(time(b),Temperature(b),-1,-25,'k','filled','linewidth',1,'ShowArrowHead','off')
+endtime=strcat(num2str(Temperature(b),3),'℃')
+text(time(b)-3,Temperature(b)-35,{'转折温度';endtime}) 
+set(0,'defaultfigurecolor','w')
+%标注转折温度，将最终的时间转化成str
+
+quiver(time(c),Temperature(c),-1,-25,'k','filled','linewidth',1,'ShowArrowHead','off')
+text(time(c)-2,Temperature(c)-30,'主泵停运') 
+set(0,'defaultfigurecolor','w')
+
+%标注最终需要的时间，将最终的时间转化成str
+endtime=strcat(num2str(time(k-1),3),'h')
+text(time(k-1),Temperature(k-1),endtime)
+
+endtime=strcat(num2str(time1188(kk-1),3),'h')
+text(time1188(kk-1),Temperature1188(kk-1),endtime) 
+
+
+quiver(time1188(bb),Temperature1188(bb),1,25,'k','filled','linewidth',1,'ShowArrowHead','off')
+endtime=strcat(num2str(Temperature1188(bb),3),'℃')
+text(time1188(bb)+1,Temperature1188(bb)+25,{'转折温度';endtime}) 
+set(0,'defaultfigurecolor','w')
+
+
+legend({'漳州降温曲线','福清降温曲线'},...
+'Location','southwest','NumColumns',1)
+set(gca,'ygrid','on','GridColor','k','gridlinestyle','-','Gridalpha',0.3)
+
+hold off
+
+%此处开始推算换热器降温过程中换热器的换热量,j是开始点,k是结束点
+hx_time=[];
+hx_actualburden=[];
+hx_exchanger=[];
+hx_entertemp=[];
+hx_outtemp=[];
+hx_veolcity=[];
+hx_time
+
+for h=1:(k-j-1)
+    hx_time(h)=time(j+h)
+    hx_veolcity(h)=actualveolcity(j+h)
+    hx_actualburden(h) = actualburden(j+h)
+    hx_entertemp(h) = Temperature(j+h)
+end
+
+hx_flow=[];
+hx_bypass=[];
+syms y;
+x=0;
+       p00 =      -0.737  
+       p10 =    -0.00438
+       p01 =    -0.02517
+       p20 =    0.000109 
+       p11 =    0.001012 
+       p02 =  -1.343e-05 
+       p30 =  -3.311e-07
+       p21 =   4.076e-07 
+       p12 =  -5.256e-07  
+       p03 =    2.42e-08 
+cc=b-j-3
+for q=1:(k-j-1)
+    hx_exchanger(q)=heatexchanger(q+j)
+    if q<cc
+        x=hx_entertemp(q)
+        eqn =hx_actualburden(q)  == p00 + p10*x + p01*y + p20*x^2 + p11*x*y + p02*y^2 + p30*x^3 + p21*x^2*y  + p12*x*y^2 + p03*y^3;
+        %上面这个务必不可以换行…
+        ccc=vpasolve(eqn,y,[10 850])
+        hx_flow(q)=ccc
+        hx_bypass(q)=850-ccc
+        hx_outtemp(q)=hx_entertemp(q)-hx_actualburden(q)*3600/(4.397*hx_flow(q))
+    else
+        hx_flow(q)=850
+        hx_bypass(q)=0
+        hx_outtemp(q)=hx_entertemp(q)-hx_actualburden(q)*3600/(4.397*hx_flow(q))
+    end
+end
+
+%此处开始1188的降温分析
+%此处开始推算换热器降温过程中换热器的换热量,j是开始点,k是结束点
+hx_time1188=[];
+hx_actualburden1188=[];
+hx_exchanger1188=[];
+hx_entertemp1188=[];
+hx_outtemp1188=[];
+hx_veolcity1188=[];
+for h=1:(kk-ji-1)
+    hx_time1188(h)=time1188(ji+h)
+    hx_veolcity1188(h)=actualveolcity1188(ji+h)
+    hx_actualburden1188(h) = actualburden1188(ji+h)
+    hx_entertemp1188(h) = Temperature1188(ji+h)
+end
+hx_flow1188=[];
+hx_bypass1188=[];
+syms z;
+w=0;
+p00 =     -0.7983
+p10 =    0.001475
+p01 =    -0.02558
+p20 =   3.623e-05
+p11 =    0.001064
+p02 =  -2.066e-05
+p30 =  -1.362e-07
+p21 =   3.849e-07
+p12 =  -7.343e-07
+p03 =   4.696e-08
+cc1188=bb-ji-3
+www=0
+for q=1:(kk-ji-1)
+    hx_exchanger1188(q)=heatexchanger1188(q+ji)
+    if q<cc1188
+        w=hx_entertemp1188(q)
+        www=hx_actualburden1188(q)
+        eqn =www == p00 + p10*w + p01*z + p20*w^2 + p11*w*z + p02*z^2 + p30*w^3 + p21*w^2*z + p12*w*z^2 + p03*z^3 ;
+        ccc1188=vpasolve(eqn,z,[10 610])
+        hx_flow1188(q)=ccc1188
+        hx_bypass1188(q)=610-ccc1188
+        hx_outtemp1188(q)=hx_entertemp1188(q)-hx_actualburden1188(q)*3600/(4.397*hx_flow1188(q))
+    else
+        hx_flow1188(q)=610
+        hx_bypass1188(q)=0
+        hx_outtemp1188(q)=hx_entertemp1188(q)-hx_actualburden1188(q)*3600/(4.397*hx_flow1188(q))
+    end
+end
+
+
+%降温速度
+figure(2)
+plot(hx_time(),hx_veolcity(),'LineStyle','-','LineWidth',1.5,'color','b')
+hold on
+plot(hx_time1188(),hx_veolcity1188(),'LineStyle','-.','LineWidth',1.5,'color','r')
+%grid on
+xlabel('停堆时间(h)')
+ylabel('余排介入后的降温速度(℃/h)')
+legend({'漳州降温速度','福清降温速度'},...
+'Location','southwest','NumColumns',1)
+hold off
+
+%入口流量
+figure(3)
+plot(hx_time(),hx_flow(),'LineStyle','-','LineWidth',1.5,'color','b')
+hold on
+plot(hx_time(),hx_bypass(),'LineStyle','--','LineWidth',1.5,'color','b')
+hold on
+plot(hx_time1188(),hx_flow1188(),'LineStyle','-','LineWidth',1.5,'color','r')
+hold on
+plot(hx_time1188(),hx_bypass1188(),'LineStyle','-.','LineWidth',1.5,'color','r')
+%grid on
+xlabel('停堆时间(h)')
+ylabel('换热器进出口流量(m^3/h)')
+legend({'漳州换热器入口流量','漳州换热器旁通流量','福清换热器入口流量','福清换热器旁通流量'},...
+'Location','southwest','NumColumns',1)
+hold off
+
+%换热器热负荷
+figure(4)
+plot(hx_time(),hx_actualburden(),'LineStyle','-','LineWidth',1.5,'color','b')
+hold on
+plot(hx_time1188(),hx_actualburden1188(),'LineStyle','-.','LineWidth',1.5,'color','r')
+%grid on
+xlabel('停堆时间(h)')
+ylabel('换热器热负荷(MW)')
+legend({'漳州换热器热负荷','福清换热器热负荷'},...
+'Location','southwest','NumColumns',1)
+hold off
+
+%进出口温度
+figure(5)
+plot(hx_time(),hx_entertemp(),'LineStyle','-','LineWidth',1.5,'color','b')
+hold on
+plot(hx_time(),hx_outtemp(),'LineStyle','--','LineWidth',1.5,'color','b')
+hold on
+plot(hx_time1188(),hx_entertemp1188(),'LineStyle','-','LineWidth',1.5,'color','r')
+hold on
+plot(hx_time1188(),hx_outtemp1188(),'LineStyle','-.','LineWidth',1.5,'color','r')
+%grid on
+xlabel('停堆时间(h)')
+ylabel('换热器进出口温度(℃)')
+legend({'漳州换热器进口温度','漳州换热器出口温度','福清换热器进口温度','福清换热器出口温度'},...
+'Location','northeast','NumColumns',1)
+%set(gca,'YLim',[0 180])
+hold off
+set(gca,'ygrid','on','GridColor','k','gridlinestyle','-','Gridalpha',0.3)
+
+
+%%%此段是用来展示两个y坐标轴的画法
+% figure(2)
+% % plot(hx_time(),hx_flow(),'k','LineWidth',1)
+% % xlabel('时间(h)')
+% % ylabel('换热器入口流量(m3/h)')
+% [ax,h1,h2]=plotyy(hx_time(),hx_flow(),hx_time(),hx_actualburden(),@plot)
+% set(get(ax(1),'ylabel'),'string', '换热器入口流量/m^3/h');
+% set(get(ax(2),'ylabel'),'string', '换热器热负荷/MW');
+% set(ax(1),'Ycolor','k')
+% set(ax(2),'Ycolor','k')
+% xlabel('停堆时间/h');
+% set(h1,'Linestyle','--','LineWidth',1.2,'color','k');
+% set(h2,'Linestyle','-','LineWidth',1.2,'color','k');
+% set(gcf,'color','white')
+% set(gca,'linewidth',1)
+% grid on
+% legend({'换热器入口流量','换热器热负荷'},...
+% 'Location','southeast','NumColumns',1)
+
+
+%cftool(hx_entertemp(),hx_flow())
+%plot(hx_time(),hx_actualburden(),'k','LineWidth',1)
+%此处是换热器公式拟合的part，需单独设立m文件进行
+% clear
+% clc
+% A=xlsread('C:\Users\Administrator\Desktop\RHRteethermal\1418hx.xlsx')
+% x=A(1,2:end)
+% yy=A(2:end,:)
+% y=yy(:,1)
+% z=yy(:,2:end)
+% surf(x,y,z)
+% cftool(x(),y(),z())
+%换热器入口温度(℃)
+%换热器入口流量(m3/h)
+%换热器热负荷(MW）
+
+%plot(time(475:681),heatex(475:681),'r','LineWidth',1)
+%hold on
+%plot(time(475:681),reactor(475:681),'k','LineWidth',1)
+%以下有用
+%plot( hx_entertemp(),hx_actualburden(),'k','LineWidth',2)
+%xlabel('换热器入口温度(℃)')
+%ylabel('换热器热负荷(MW）')
+%cftool( hx_entertemp(),hx_actualburden())
+%plot(timetest(solve),hetest(),'r','LineWidth',1)
+%hold on
+%plot(timetest(),reactortest(),'r','LineWidth',1)
+%hold on
+%plot(timetest(),zerox(),'k','LineWidth',2)
+%solve
