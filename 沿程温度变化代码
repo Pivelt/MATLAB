@@ -1,0 +1,98 @@
+clear
+clc
+A=xlsread('D:\RHRbigthesis\1516matlab.xlsx')
+x=A(1:31,5)
+Y1=A(1:31,4)
+Y2=A(32:62,4)
+Y3=A(63:93,4)
+Y4=A(94:124,4)
+Y5=A(125:155,4)
+Y6=A(156:186,4)
+Y7=A(187:217,4)
+Y8=A(218:248,4)
+Y9=A(249:279,4)
+Y10=A(280:310,4)
+Y11=A(311:341,4)
+Y12=A(342:372,4)
+p1=scatter(x,Y1,'o','MarkerFaceColor','[0.160784314	0.501960784	0.725490196]','MarkerEdgeColor','[0.160784314	0.501960784	0.725490196]','LineWidth',1)%circle
+hold on
+p2=scatter(x,Y2,'+','MarkerFaceColor','m','MarkerEdgeColor','m','LineWidth',1)%circle
+hold on
+p3=scatter(x,Y3,'*','MarkerFaceColor','[0.937254902	0.435294118	0.423529412]','MarkerEdgeColor','[0.937254902	0.435294118	0.423529412]','LineWidth',1)%circle
+hold on
+p4=scatter(x,Y4,'x','MarkerFaceColor','r','MarkerEdgeColor','r','LineWidth',1)%circle
+hold on
+p5=scatter(x,Y5,'s','MarkerFaceColor','[0.93 0.69 0.13]','MarkerEdgeColor','[0.93 0.69 0.13]','LineWidth',1)%circle
+hold on
+p6=scatter(x,Y6,'d','MarkerFaceColor','b','MarkerEdgeColor','b','LineWidth',1)%circle
+hold on
+p7=scatter(x,Y7,'^','MarkerFaceColor','[0.49 0.18 0.56]','MarkerEdgeColor','[0.49 0.18 0.56]','LineWidth',1)%circle
+hold on
+p8=scatter(x,Y8,'v','MarkerFaceColor','[0.4660 0.6740 0.1880]','MarkerEdgeColor','[0.4660 0.6740 0.1880]k','LineWidth',1)%circle
+hold on
+p9=scatter(x,Y9,'h','MarkerFaceColor','[0.3010 0.7450 0.9330]','MarkerEdgeColor','[0.3010 0.7450 0.9330]','LineWidth',1)%circle
+hold on
+p10=scatter(x,Y10,'>','MarkerFaceColor','[0.6350 0.0780 0.1840]','MarkerEdgeColor','[0.6350 0.0780 0.1840]','LineWidth',1)%circle
+hold on
+p11=scatter(x,Y11,'<','MarkerFaceColor','k','MarkerEdgeColor','k','LineWidth',1)%circle
+hold on
+p12=scatter(x,Y12,'p','MarkerFaceColor','[0.341176471	0.345098039	0.733333333]','MarkerEdgeColor','[0.341176471	0.345098039	0.733333333]','LineWidth',1)%circle
+hold on
+f1 = pchip(x,Y1); 
+f2 = pchip(x,Y2); 
+f3 = pchip(x,Y3); 
+f4 = pchip(x,Y4); 
+f5 = pchip(x,Y5); 
+f6 = pchip(x,Y6); 
+f7 = pchip(x,Y7); 
+f8 = pchip(x,Y8); 
+f9 = pchip(x,Y9); 
+f10 = pchip(x,Y10); 
+f11 = pchip(x,Y11); 
+f12 = pchip(x,Y12); 
+X=-5.13:0.01:17.5;
+YY1=ppval(f1,X);
+YY2=ppval(f2,X);
+YY3=ppval(f3,X);
+YY4=ppval(f4,X);
+YY5=ppval(f5,X);
+YY6=ppval(f6,X);
+YY7=ppval(f7,X);
+YY8=ppval(f8,X);
+YY9=ppval(f9,X);
+YY10=ppval(f10,X);
+YY11=ppval(f11,X);
+YY12=ppval(f12,X);
+pp1=plot(X,YY1,'Color','[0.160784314	0.501960784	0.725490196]','LineWidth',1.5);
+hold on
+pp2=plot(X,YY2,'Color','m','LineWidth',1.5);
+hold on
+pp3=plot(X,YY3,'Color','[0.937254902	0.435294118	0.423529412]','LineWidth',1.5);
+hold on
+pp4=plot(X,YY4,'Color','r','LineWidth',1.5);
+hold on
+pp5=plot(X,YY5,'Color','[0.93 0.69 0.13]','LineWidth',1.5);
+hold on
+pp6=plot(X,YY6,'Color','b','LineWidth',1.5);
+hold on
+pp7=plot(X,YY7,'Color','[0.49 0.18 0.56]','LineWidth',1.5);
+hold on
+pp8=plot(X,YY8,'Color','[0.4660 0.6740 0.1880]','LineWidth',1.5);
+hold on
+pp9=plot(X,YY9,'Color','[0.3010 0.7450 0.9330]','LineWidth',1.5);
+hold on
+pp10=plot(X,YY10,'Color','[0.6350 0.0780 0.1840]','LineWidth',1.5);
+hold on
+pp11=plot(X,YY11,'Color','k','LineWidth',1.5);
+hold on
+pp12=plot(X,YY12,'Color','[0.341176471	0.345098039	0.733333333]','LineWidth',1.5);
+hold off
+set(gca,'YLim',[40 190])
+set(gca,'XLim',[-3.3 17.5])
+xlabel('Y/Din', 'FontSize',14,'Fontangle','italic')
+ylabel('Temperature(℃)', 'FontSize',14 ,'Fontangle','italic')
+legend([p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12],{"0°-inner",	"30°-inner",	"60°-inner",	"90°-inner",	"120°-inner",...
+    "150°-inner",	"180°-inner",	"210°-inner",	"240°-inner",...
+    "270°-inner",	"300°-inner",	"330°-inner"},...
+'Location','southeast','NumColumns',2)
+box on
