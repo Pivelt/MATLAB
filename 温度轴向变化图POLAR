@@ -1,0 +1,44 @@
+clear
+clc
+A=xlsread('D:\RHRbigthesis\1516matlabpolar.xlsx')
+x=[0,pi/6,pi*2/6,pi*3/6,pi*4/6,pi*5/6,pi*6/6,pi*7/6,pi*8/6,pi*9/6,pi*10/6,pi*11/6,pi*12/6]
+Y1=A(1,1:13)
+Y2=A(2,1:13)%-1.12D
+Y3=A(3,1:13)
+Y4=A(4,1:13)
+Y5=A(5,1:13)%0.59D
+Y6=A(6,1:13)%1.20D
+Y7=A(7,1:13)%1.80D
+Y8=A(8,1:13)
+Y9=A(9,1:13)%3.00D
+Y10=A(12,1:13)%4.52D
+Y11=A(19,1:13)%6.91D
+Y12=A(30,1:13)%15.74D
+
+p1=polarplot(x,Y2,'-o','Color','[0.160784314	0.501960784	0.725490196]','LineWidth',1.5)
+hold on
+p2=polarplot(x,Y5,'-+','Color','m','LineWidth',1.5)
+hold on
+p3=polarplot(x,Y6,'-*','Color','[0.937254902	0.435294118	0.423529412]','LineWidth',1.5)
+hold on
+p4=polarplot(x,Y7,'-x','Color','[0.93 0.69 0.13]','LineWidth',1.5)
+hold on
+p5=polarplot(x,Y9,'-d','Color','b','LineWidth',1.5)
+hold on
+p6=polarplot(x,Y10,'-^','Color','[0.49 0.18 0.56]','LineWidth',1.5)
+hold on
+p7=polarplot(x,Y11,'-v','Color','[0.4660 0.6740 0.1880]','LineWidth',1.5)
+% hold on
+% p8=polarplot(x,Y8,'->','Color','[0.3010 0.7450 0.9330]','LineWidth',1.5)
+hold off
+thetaticks(0:30:360)
+%ax.RGrid = 'off';
+legend([p1 p2 p3 p4 p5 p6 p7],{"-1.12D","0.59D","1.20D","1.80D","3.00D",...
+    "4.52D","6.91D"},...
+'Location','southeast','NumColumns',2)
+box on
+set(gca,'GridAlpha',0.6)
+set(gca,'Rlim',[0 180])
+pax = gca;
+pax.ThetaDir = 'counterclockwise';
+pax.ThetaZeroLocation = 'bottom';
